@@ -4,12 +4,11 @@ namespace PhpOffice\PhpSpreadsheet;
 
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use PhpOffice\PhpSpreadsheet\Shared\File;
-use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
 /**
- * Factory to create readers and writers easily.
+ * Factory to create readers easily.
  *
- * It is not required to use this class, but it should make it easier to read and write files.
+ * It is not required to use this class, but it should make it easier to read files.
  * Especially for reading files with an unknown format.
  */
 abstract class IOFactory
@@ -24,12 +23,6 @@ abstract class IOFactory
     public const READER_HTML = 'Html';
     public const READER_CSV = 'Csv';
 
-    public const WRITER_XLSX = 'Xlsx';
-    public const WRITER_XLS = 'Xls';
-    public const WRITER_ODS = 'Ods';
-    public const WRITER_CSV = 'Csv';
-    public const WRITER_HTML = 'Html';
-
     /** @var array<string, class-string<IReader>> */
     private static array $readers = [
         self::READER_XLSX => Reader\Xlsx::class,
@@ -41,62 +34,6 @@ abstract class IOFactory
         self::READER_HTML => Reader\Html::class,
         self::READER_CSV => Reader\Csv::class,
     ];
-
-    /** @var array<string, class-string<IWriter>> */
-    private static array $writers = [
-        self::WRITER_XLS => Writer\Xls::class,
-        self::WRITER_XLSX => Writer\Xlsx::class,
-        self::WRITER_ODS => Writer\Ods::class,
-        self::WRITER_CSV => Writer\Csv::class,
-        self::WRITER_HTML => Writer\Html::class,
-        'Tcpdf' => Writer\Pdf\Tcpdf::class,
-        'Dompdf' => Writer\Pdf\Dompdf::class,
-        'Mpdf' => Writer\Pdf\Mpdf::class,
-    ];
-
-    /** @internal */
-    public static function restoreDefaultReadersAndWriters(): void
-    {
-        self::$readers = [
-            self::READER_XLSX => Reader\Xlsx::class,
-            self::READER_XLS => Reader\Xls::class,
-            self::READER_XML => Reader\Xml::class,
-            self::READER_ODS => Reader\Ods::class,
-            self::READER_SLK => Reader\Slk::class,
-            self::READER_GNUMERIC => Reader\Gnumeric::class,
-            self::READER_HTML => Reader\Html::class,
-            self::READER_CSV => Reader\Csv::class,
-        ];
-        self::$writers = [
-            self::WRITER_XLS => Writer\Xls::class,
-            self::WRITER_XLSX => Writer\Xlsx::class,
-            self::WRITER_ODS => Writer\Ods::class,
-            self::WRITER_CSV => Writer\Csv::class,
-            self::WRITER_HTML => Writer\Html::class,
-            'Tcpdf' => Writer\Pdf\Tcpdf::class,
-            'Dompdf' => Writer\Pdf\Dompdf::class,
-            'Mpdf' => Writer\Pdf\Mpdf::class,
-        ];
-    }
-
-    /**
-     * Create Writer\IWriter.
-     */
-    public static function createWriter(Spreadsheet $spreadsheet, string $writerType): IWriter
-    {
-        /** @var class-string<IWriter> */
-        $className = $writerType;
-        if (!in_array($writerType, self::$writers, true)) {
-            if (!isset(self::$writers[$writerType])) {
-                throw new Writer\Exception("No writer found for type $writerType");
-            }
-
-            // Instantiate writer
-            $className = self::$writers[$writerType];
-        }
-
-        return new $className($spreadsheet);
-    }
 
     /**
      * Create IReader.
@@ -243,21 +180,6 @@ abstract class IOFactory
             'csv' => null,
             default => null,
         };
-    }
-
-    /**
-     * Register a writer with its type and class name.
-     *
-     * @param class-string<IWriter> $writerClass
-     */
-    public static function registerWriter(string $writerType, string $writerClass): void
-    {
-        // We want phpstan to validate caller, but still need this test
-        if (!is_a($writerClass, IWriter::class, true)) { //* @phpstan-ignore-line
-            throw new Writer\Exception('Registered writers must implement ' . IWriter::class);
-        }
-
-        self::$writers[$writerType] = $writerClass;
     }
 
     /**
