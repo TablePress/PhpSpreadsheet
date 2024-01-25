@@ -27,7 +27,7 @@ Note - reading or writing certain aspects of a spreadsheet may not be supported 
 
 ## Software requirements
 
-PHP version 7.3 or newer to develop using PhpSpreadsheet. Other requirements, such as PHP extensions, are enforced by
+PHP version 7.2 or newer to develop using PhpSpreadsheet. Other requirements, such as PHP extensions, are enforced by
 composer. See the `require` section of [the composer.json file](https://github.com/PHPOffice/PhpSpreadsheet/blob/master/composer.json)
 for details.
 
