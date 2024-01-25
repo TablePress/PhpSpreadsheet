@@ -27,7 +27,7 @@ Note - reading or writing certain aspects of a spreadsheet may not be supported 
 
 ## Software requirements
 
-PHP version 7.4 or newer to develop using PhpSpreadsheet. Other requirements, such as PHP extensions, are enforced by
+PHP version 7.3 or newer to develop using PhpSpreadsheet. Other requirements, such as PHP extensions, are enforced by
 composer. See the `require` section of [the composer.json file](https://github.com/PHPOffice/PhpSpreadsheet/blob/master/composer.json)
 for details.
 
@@ -36,8 +36,8 @@ for details.
 LTS: Support for PHP versions will only be maintained for a period of six months beyond the
 [end of life of that PHP version](https://www.php.net/eol.php).
 
-Currently the required PHP minimum version is PHP 7.4: the last release was 7.4.32 on 29th September 2022, and security support ends on 28th November 2022, so PhpSpreadsheet will support PHP 7.4 until 28th May 2023.
-PHP 8.0 is officially [End of Life](https://www.php.net/supported-versions.php) on 26th November 2023, and PhpSpreadsheet will continue to support PHP 8.0 for six months after that date.
+Currently the required PHP minimum version is PHP 7.3. The last PHP release was 7.3.33 on 6th December 2021, so PhpSpreadsheet will support PHP 7.3 until 6th June 2022.
+PHP 7.4 is officially [End of Life](https://www.php.net/supported-versions.php) on 28th November 2022, and PhpSpreadsheet will continue to support PHP 7.4 for six months after that date.
 
 See the `composer.json` for other requirements.
 
@@ -60,7 +60,7 @@ If you are building your installation on a development machine that is on a diff
 {
     "config": {
         "platform": {
-            "php": "7.4"
+            "php": "7.3"
         }
     }
 }
@@ -86,8 +86,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 $spreadsheet = new Spreadsheet();
-$activeWorksheet = $spreadsheet->getActiveSheet();
-$activeWorksheet->setCellValue('A1', 'Hello World !');
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setCellValue('A1', 'Hello World !');
 
 $writer = new Xlsx($spreadsheet);
 $writer->save('hello world.xlsx');
