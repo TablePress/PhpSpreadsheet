@@ -27,7 +27,7 @@ Note - reading or writing certain aspects of a spreadsheet may not be supported 
 
 ## Software requirements
 
-PHP version 8.0 or newer to develop using PhpSpreadsheet. Other requirements, such as PHP extensions, are enforced by
+PHP version 7.4 or newer to develop using PhpSpreadsheet. Other requirements, such as PHP extensions, are enforced by
 composer. See the `require` section of [the composer.json file](https://github.com/PHPOffice/PhpSpreadsheet/blob/master/composer.json)
 for details.
 
@@ -36,10 +36,8 @@ for details.
 LTS: Support for PHP versions will only be maintained for a period of six months beyond the
 [end of life of that PHP version](https://www.php.net/eol.php).
 
-Currently, the required PHP minimum version is PHP 8.0.
-
-Support for PHP versions will only be maintained for a period of six months beyond the
-[end of life](https://www.php.net/supported-versions) of that PHP version.
+Currently the required PHP minimum version is PHP 7.4: the last release was 7.4.32 on 29th September 2022, and security support ends on 28th November 2022, so PhpSpreadsheet will support PHP 7.4 until 28th May 2023.
+PHP 8.0 is officially [End of Life](https://www.php.net/supported-versions.php) on 26th November 2023, and PhpSpreadsheet will continue to support PHP 8.0 for six months after that date.
 
 See the `composer.json` for other requirements.
 
@@ -62,7 +60,7 @@ If you are building your installation on a development machine that is on a diff
 {
     "config": {
         "platform": {
-            "php": "8.0"
+            "php": "7.4"
         }
     }
 }
