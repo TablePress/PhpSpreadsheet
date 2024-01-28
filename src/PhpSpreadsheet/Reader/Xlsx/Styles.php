@@ -58,9 +58,13 @@ class Styles extends BaseParserClass
 
     private function getStyleAttributes(SimpleXMLElement $value): SimpleXMLElement
     {
-        $attr = $value->attributes('');
-        if ($attr === null || count($attr) === 0) {
-            $attr = $value->attributes($this->namespace);
+        // TablePress: Added check for $value being falsy, which is needed here for compatibility with PHP < 8.
+        $attr = null;
+        if ( $value ) {
+            $attr = $value->attributes('');
+            if ($attr === null || count($attr) === 0) {
+                $attr = $value->attributes($this->namespace);
+            }
         }
 
         return Xlsx::testSimpleXml($attr);
