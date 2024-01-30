@@ -2028,7 +2028,7 @@ class FunctionArray extends CalculationBase
         'ROUND' => [
             'category' => Category::CATEGORY_MATH_AND_TRIG,
             'functionCall' => [MathTrig\Round::class, 'round'],
-            'argumentCount' => '2',
+            'argumentCount' => '1,2',
         ],
         'ROUNDBAHTDOWN' => [
             'category' => Category::CATEGORY_MATH_AND_TRIG,
@@ -2043,12 +2043,12 @@ class FunctionArray extends CalculationBase
         'ROUNDDOWN' => [
             'category' => Category::CATEGORY_MATH_AND_TRIG,
             'functionCall' => [MathTrig\Round::class, 'down'],
-            'argumentCount' => '2',
+            'argumentCount' => '1,2',
         ],
         'ROUNDUP' => [
             'category' => Category::CATEGORY_MATH_AND_TRIG,
             'functionCall' => [MathTrig\Round::class, 'up'],
-            'argumentCount' => '2',
+            'argumentCount' => '1,2',
         ],
         'ROW' => [
             'category' => Category::CATEGORY_LOOKUP_AND_REFERENCE,
