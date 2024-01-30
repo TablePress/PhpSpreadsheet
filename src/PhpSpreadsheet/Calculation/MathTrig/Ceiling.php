@@ -37,9 +37,12 @@ class Ceiling
             return self::evaluateArrayArguments([self::class, __FUNCTION__], $number, $significance);
         }
 
+        /*
+        // Allow one argument only, for compatibility with Google Sheets, when importing an Excel file.
         if ($significance === null) {
             self::floorCheck1Arg();
         }
+        */
 
         try {
             $number = Helpers::validateNumericNullBool($number);
