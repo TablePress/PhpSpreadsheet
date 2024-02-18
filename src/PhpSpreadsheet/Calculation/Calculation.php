@@ -34,7 +34,7 @@ class Calculation
     //    Opening bracket
     const CALCULATION_REGEXP_OPENBRACE = '\(';
     //    Function (allow for the old @ symbol that could be used to prefix a function, but we'll ignore it)
-    const CALCULATION_REGEXP_FUNCTION = '@?(?:_xlfn\.)?(?:_xlws\.)?([\p{L}][\p{L}\p{N}\.]*)[\s]*\(';
+    const CALCULATION_REGEXP_FUNCTION = '@?(?:_xlfn\.)?(?:_xlws\.)?([\p{L}][\p{L}\p{N}\._]*)[\s]*\('; // TablePress: Add _ to allow the deprecated RAND_INT, RAND_FLOAT, NUMBER_FORMAT, and NUMBER_FORMAT_EU functions.
     //    Strip xlfn and xlws prefixes from function name
     const CALCULATION_REGEXP_STRIP_XLFN_XLWS = '/(_xlfn[.])?(_xlws[.])?(?=[\p{L}][\p{L}\p{N}\.]*[\s]*[(])/';
     //    Cell reference (cell or range of cells, with or without a sheet reference)
@@ -2886,11 +2886,58 @@ class Calculation
 
     public function __construct(?Spreadsheet $spreadsheet = null)
     {
+        // TablePress: Load custom modications to the calculation engine.
+        $this->register_tablepress_aliases_and_custom_functions();
+
         $this->spreadsheet = $spreadsheet;
         $this->cyclicReferenceStack = new CyclicReferenceStack();
         $this->debugLog = new Logger($this->cyclicReferenceStack);
         $this->branchPruner = new BranchPruner($this->branchPruningEnabled);
         self::$referenceHelper = ReferenceHelper::getInstance();
+    }
+
+    /**
+     * Register custom functions and aliases that TablePress uses.
+     *
+     * These functions don't exist in Excel and need to be aliases or replaced by a custom implementation, to maintain backward compatibility.
+     * These functions are deprecated in TablePress and should be replaced with their corresponding function!
+     *
+     * For functions with an underscore (_) in their name, the self::CALCULATION_REGEXP_FUNCTION regexp has been adjusted above.
+     */
+    private function register_tablepress_aliases_and_custom_functions() {
+        // Trigonometric ARC functions only have an A prefix in Excel.
+        self::$phpSpreadsheetFunctions['ARCCOS']  = self::$phpSpreadsheetFunctions['ACOS'];
+        self::$phpSpreadsheetFunctions['ARCCOSH'] = self::$phpSpreadsheetFunctions['ACOSH'];
+        self::$phpSpreadsheetFunctions['ARCCOT']  = self::$phpSpreadsheetFunctions['ACOT'];
+        self::$phpSpreadsheetFunctions['ARCCOTH'] = self::$phpSpreadsheetFunctions['ACOTH'];
+        self::$phpSpreadsheetFunctions['ARCSIN']  = self::$phpSpreadsheetFunctions['ASIN'];
+        self::$phpSpreadsheetFunctions['ARCSINH'] = self::$phpSpreadsheetFunctions['ASINH'];
+        self::$phpSpreadsheetFunctions['ARCTAN']  = self::$phpSpreadsheetFunctions['ATAN'];
+        self::$phpSpreadsheetFunctions['ARCTAN2'] = self::$phpSpreadsheetFunctions['ATAN2'];
+        self::$phpSpreadsheetFunctions['ARCTANH'] = self::$phpSpreadsheetFunctions['ATANH'];
+
+        // Aliases for functions with different names in Excel.
+        self::$phpSpreadsheetFunctions['MEAN']       = self::$phpSpreadsheetFunctions['AVERAGE'];
+        self::$phpSpreadsheetFunctions['CEIL']       = self::$phpSpreadsheetFunctions['CEILING'];
+        self::$phpSpreadsheetFunctions['RAND_INT']   = self::$phpSpreadsheetFunctions['RANDBETWEEN'];
+        self::$phpSpreadsheetFunctions['RAND_FLOAT'] = self::$phpSpreadsheetFunctions['RAND'];
+
+        // Custom functions for which there is no corresponding function in Excel.
+        self::$phpSpreadsheetFunctions['NUMBER_FORMAT'] = array(
+            'category'      => Category::CATEGORY_TEXT_AND_DATA,
+            'functionCall'  => [TextData\Format::class, 'NUMBER_FORMAT'],
+            'argumentCount' => '1,2',
+        );
+        self::$phpSpreadsheetFunctions['NUMBER_FORMAT_EU'] = array(
+            'category'      => Category::CATEGORY_TEXT_AND_DATA,
+            'functionCall'  => [TextData\Format::class, 'NUMBER_FORMAT_EU'],
+            'argumentCount' => '1,2',
+        );
+        self::$phpSpreadsheetFunctions['RANGE'] = array(
+            'category'      => Category::CATEGORY_STATISTICAL,
+            'functionCall' => [Statistical\Range::class, 'RANGE'],
+            'argumentCount' => '1+',
+        );
     }
 
     private static function loadLocales(): void
