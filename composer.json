@@ -75,7 +75,6 @@
         "ext-xmlwriter": "*",
         "ext-zip": "*",
         "ext-zlib": "*",
-        "composer/pcre": "^1 || ^2 || ^3",
         "markbaker/complex": "^3.0",
         "markbaker/matrix": "^3.0",
         "psr/http-client": "^1.0",
