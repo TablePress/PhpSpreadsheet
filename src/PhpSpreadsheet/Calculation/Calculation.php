@@ -35,7 +35,7 @@ class Calculation extends CalculationLocale
     //    Opening bracket
     const CALCULATION_REGEXP_OPENBRACE = '\(';
     //    Function (allow for the old @ symbol that could be used to prefix a function, but we'll ignore it)
-    const CALCULATION_REGEXP_FUNCTION = '@?(?:_xlfn\.)?(?:_xlws\.)?((?:__xludf\.)?[\p{L}][\p{L}\p{N}\.]*)[\s]*\(';
+    const CALCULATION_REGEXP_FUNCTION = '@?(?:_xlfn\.)?(?:_xlws\.)?((?:__xludf\.)?[\p{L}][\p{L}\p{N}\._]*)[\s]*\('; // TablePress: Add _ to allow the deprecated RAND_INT, RAND_FLOAT, NUMBER_FORMAT, and NUMBER_FORMAT_EU functions.
     //    Cell reference (cell or range of cells, with or without a sheet reference)
     const CALCULATION_REGEXP_CELLREF = '((([^\s,!&%^\/\*\+<>=:`-]*)|(\'(?:[^\']|\'[^!])+?\')|(\"(?:[^\"]|\"[^!])+?\"))!)?\$?\b([a-z]{1,3})\$?(\d{1,7})(?![\w.])';
     // Used only to detect spill operator #
@@ -192,6 +192,9 @@ class Calculation extends CalculationLocale
 
     public function __construct(?Spreadsheet $spreadsheet = null)
     {
+        // TablePress: Load custom modications to the calculation engine.
+        $this->register_tablepress_aliases_and_custom_functions();
+
         $this->spreadsheet = $spreadsheet;
         $this->cyclicReferenceStack = new CyclicReferenceStack();
         $this->debugLog = new Logger($this->cyclicReferenceStack);
