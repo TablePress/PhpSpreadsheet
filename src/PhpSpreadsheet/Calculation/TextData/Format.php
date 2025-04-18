@@ -325,4 +325,48 @@ class Format
 
         return is_array($value) ? ExcelError::VALUE() : (float) $value;
     }
+
+    /**
+     * NUMBER_FORMAT (Specific to TablePress).
+     *
+     * Formats a number with the . (period) as the decimal separator and the , (comma) as the thousands separator, rounded to a precision.
+     *
+     * The is a common number format in English-language regions.
+     *
+     * @param mixed $value    The value to format.
+     * @param mixed $decimals Optional. Integer value for the number of decimal places that should be formatted. Default 0.
+     * @return string Formatted number.
+     */
+    public static function NUMBER_FORMAT( $value, $decimals = 0 ) {
+        $current_decimal_separator = StringHelper::getDecimalSeparator();
+        $current_thousands_separator = StringHelper::getThousandsSeparator();
+        StringHelper::setDecimalSeparator( '.' );
+        StringHelper::setThousandsSeparator( ',' );
+        $result = self::FIXEDFORMAT( $value, $decimals, false );
+        StringHelper::setDecimalSeparator( $current_decimal_separator );
+        StringHelper::setThousandsSeparator( $current_thousands_separator );
+        return $result;
+    }
+
+    /**
+     * NUMBER_FORMAT_EU (Specific to TablePress).
+     *
+     * Formats a number with the , (comma) as the decimal separator and the . (period) as the thousands separator, rounded to a precision.
+     *
+     * The is a common number format in non-English-language regions, mainly in Europe.
+     *
+     * @param mixed $value    The value to format.
+     * @param mixed $decimals Optional. Integer value for the number of decimal places that should be formatted. Default 0.
+     * @return string Formatted number.
+     */
+    public static function NUMBER_FORMAT_EU( $value, $decimals = 0 ) {
+        $current_decimal_separator = StringHelper::getDecimalSeparator();
+        $current_thousands_separator = StringHelper::getThousandsSeparator();
+        StringHelper::setDecimalSeparator( ',' );
+        StringHelper::setThousandsSeparator( '.' );
+        $result = self::FIXEDFORMAT( $value, $decimals, false );
+        StringHelper::setDecimalSeparator( $current_decimal_separator );
+        StringHelper::setThousandsSeparator( $current_thousands_separator );
+        return $result;
+    }
 }
