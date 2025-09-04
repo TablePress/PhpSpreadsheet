@@ -65,7 +65,12 @@ class MemoryDrawing extends BaseDrawing
 
     public function __destruct()
     {
-        $this->imageResource = null;
+        if ($this->imageResource) {
+            if (\PHP_VERSION_ID < 80000) {
+                @imagedestroy($this->imageResource);
+            }
+            $this->imageResource = null;
+        }
         $this->worksheet = null;
     }
 
