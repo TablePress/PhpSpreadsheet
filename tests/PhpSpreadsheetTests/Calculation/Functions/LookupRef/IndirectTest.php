@@ -172,7 +172,7 @@ class IndirectTest extends AllSetupTeardown
         ];
     }
 
-    protected static bool $definedFormulaWorking = false;
+    private static bool $definedFormulaWorking = false;
 
     public function testAboveCell(): void
     {

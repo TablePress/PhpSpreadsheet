@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class SampleTest extends TestCase
 {
-    protected static bool $alwaysTrue = true;
+    private static bool $alwaysTrue = true;
 
     #[Attributes\RunInSeparateProcess]
     #[Attributes\PreserveGlobalState(false)]
