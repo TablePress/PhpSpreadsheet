@@ -10,11 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class HandlerTest extends TestCase
 {
-    protected static bool $alwaysTrue = true;
-
     public function testSuppressed(): void
     {
-        self::assertSame(self::$alwaysTrue, Handler::suppressed());
+        self::assertTrue(Handler::suppressed());
     }
 
     public function testDeprecated(): void

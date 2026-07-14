@@ -14,7 +14,7 @@ class Issue4269Test extends TestCase
 {
     private string $outputFile = '';
 
-    protected static bool $alwaysFalse = false;
+    private static bool $alwaysFalse = false;
 
     protected function tearDown(): void
     {

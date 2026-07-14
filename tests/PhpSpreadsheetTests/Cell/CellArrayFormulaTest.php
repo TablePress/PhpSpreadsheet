@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class CellArrayFormulaTest extends TestCase
 {
-    protected bool $skipUpdateInSpillageRange = true;
+    private bool $skipUpdateInSpillageRange = true;
 
     public function testSetValueArrayFormulaNoSpillage(): void
     {
