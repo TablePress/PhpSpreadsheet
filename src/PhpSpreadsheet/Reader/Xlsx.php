@@ -1121,9 +1121,12 @@ class Xlsx extends BaseReader
                                 (new DataValidations($docSheet, $xmlSheet))->load();
                             }
 
+                            /*
+                            TablePress: Remove support for Sparklines as they require PHP 8.1 features.
                             if ($xmlSheet && !$this->readDataOnly) {
                                 (new Sparklines($docSheet, $xmlSheet))->load();
                             }
+                            */
 
                             // unparsed sheet AlternateContent
                             if ($xmlSheet && !$this->readDataOnly) {
